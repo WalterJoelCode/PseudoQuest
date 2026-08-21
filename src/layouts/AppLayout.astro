@@ -1,0 +1,22 @@
+---
+import '../styles/app.css';
+interface Props { title?: string; description?: string; }
+const { title='PseudoQuest', description='Aprende lógica, algoritmos y pseudocódigo jugando.' }=Astro.props;
+const path=Astro.url.pathname;
+const base=`${import.meta.env.BASE_URL.replace(/\/$/,'')}/`;
+const url=(value:string)=>`${base}${value.replace(/^\//,'')}`;
+---
+<!doctype html><html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content={description}><link rel="icon" href={url('/favicon.svg')}><title>{title} · PseudoQuest</title>
+<script is:inline>const t=localStorage.getItem('pq-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');</script>
+</head><body>
+<header class="topbar">
+  <a class="brand" href={url('/')} aria-label="PseudoQuest, inicio"><span class="brand-mark">P<i>Q</i></span><span>Pseudo<i>Quest</i></span></a>
+  <nav class="main-nav" aria-label="Navegación principal"><a class:list={{active:path===base}} href={url('/')}>Aprender</a><a class:list={{active:path.includes('/progreso')}} href={url('/progreso')}>Mi progreso</a><a class:list={{active:path.includes('/material')}} href={url('/material-estudio')}>Recursos</a></nav>
+  <div class="top-actions"><div class="mini-stat" title="Racha actual"><span>🔥</span><b data-streak>1</b></div><div class="mini-stat" title="Experiencia total"><span>⚡</span><b data-xp>0</b></div><button class="icon-button" id="sound-toggle" aria-label="Sonidos">🔊</button><button class="icon-button" id="theme-toggle" aria-label="Cambiar tema">◐</button></div>
+</header>
+<main><slot /></main>
+<footer class="site-footer"><div><a class="brand small" href={url('/')}><span class="brand-mark">P<i>Q</i></span><span>PseudoQuest</span></a><p>La lógica es tu superpoder. Entrénala paso a paso.</p><button class="version-link" id="version-open" aria-haspopup="dialog">Versión 1.1</button></div><nav><a href={url('/faq')}>Preguntas frecuentes</a><a href={url('/acerca')}>Acerca de</a><a href={url('/material-complementario')}>Material complementario</a><a href={url('/pseint')}>Descargar PSeInt</a></nav><p>Hecho para aprender, equivocarse y volver a intentar.</p></footer>
+<dialog class="version-modal" id="version-modal" aria-labelledby="version-title"><div class="modal-head"><div><p class="eyebrow">Notas de la versión</p><h2 id="version-title">PseudoQuest 1.1</h2></div><button class="modal-close" id="version-close" aria-label="Cerrar">×</button></div><p class="modal-intro">Una actualización enfocada en convertir la plantilla inicial en una aventura educativa funcional.</p><ul class="release-list"><li><span>⚡</span><div><b>Progreso gamificado</b><p>XP, rangos, racha diaria, insignias y avance persistente.</p></div></li><li><span>🧭</span><div><b>15 misiones interactivas</b><p>Microlecciones y actividades para fundamentos, decisiones y ciclos.</p></div></li><li><span>🌗</span><div><b>Experiencia más accesible</b><p>Modo claro y oscuro, sonidos configurables y diseño responsive.</p></div></li><li><span>🚀</span><div><b>Lista para GitHub Pages</b><p>Despliegue automático y navegación compatible con la ruta del repositorio.</p></div></li></ul><form method="dialog"><button class="button">Entendido</button></form></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div><script is:inline define:vars={{base}}>window.PQ_BASE=base;</script><script is:inline src={url('/app.js')}></script>
+</body></html>
