@@ -1,0 +1,8 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+interface Props { eyebrow:string; title:string; intro:string; items:{icon:string,title:string,text:string,link?:string,label?:string}[] }
+const {eyebrow,title,intro,items}=Astro.props;
+const base=`${import.meta.env.BASE_URL.replace(/\/$/,'')}/`;
+const url=(value:string)=>`${base}${value.replace(/^\//,'')}`;
+---
+<AppLayout title={title}><div class="container"><header class="page-head"><p class="eyebrow">{eyebrow}</p><h1>{title}</h1><p>{intro}</p></header><section class="resource-grid" style="padding-bottom:70px">{items.map(item=><article class="card resource-card"><span class="icon">{item.icon}</span><h3>{item.title}</h3><p>{item.text}</p>{item.link&&<a class="button secondary" href={url(item.link)}>{item.label||'Explorar'} →</a>}</article>)}</section></div></AppLayout>
