@@ -1,10 +1,73 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
+import { allMissions } from '../data/course';
+import '../styles/profile-progress.css';
+import '../styles/danger-actions.css';
 const base=`${import.meta.env.BASE_URL.replace(/\/$/,'')}/`;
+const badgeDefinitions=[
+  {xp:100,icon:'🌱',name:'Primer impulso'},
+  {xp:250,icon:'🧭',name:'Explorador lógico'},
+  {xp:500,icon:'🧠',name:'Mente algorítmica'},
+  {xp:1000,icon:'🔥',name:'Dominio creciente'},
+  {xp:2500,icon:'👑',name:'Maestro de la lógica'}
+];
+const missionDefinitions=allMissions.map(({id,title})=>({id,title}));
 ---
-<AppLayout title="Mi progreso"><div class="container"><header class="page-head"><p class="eyebrow">Tu perfil de aprendizaje</p><h1>Mi progreso</h1><p>Cada misión suma. Aquí puedes ver todo lo que has construido en tu aventura.</p></header>
-<section class="stat-grid"><article class="card stat-card"><span>Experiencia total</span><strong>⚡ <i data-xp>0</i> XP</strong></article><article class="card stat-card"><span>Rango actual</span><strong data-rank>Novato</strong></article><article class="card stat-card"><span>Racha diaria</span><strong>🔥 <i data-streak>1</i> días</strong></article></section>
-<div class="content-grid" style="margin-top:24px"><section class="card prose-card"><p class="eyebrow">Recorrido general</p><h2><span data-completed>0</span> de 15 misiones</h2><div class="progress"><span data-progress style="width:0%"></span></div><p><b data-percent>0%</b> del contenido disponible completado.</p><h2 style="margin-top:32px">Insignias</h2><div class="badge-grid"><article class="badge card" data-badge="Primer paso">🌱<h3>Primer paso</h3><p>Completa tu primera misión.</p></article><article class="badge card" data-badge="Mente lógica">🧠<h3>Mente lógica</h3><p>Completa cinco misiones.</p></article><article class="badge card" data-badge="Imparable">🔥<h3>Imparable</h3><p>Mantén una racha de 3 días.</p></article></div></section><aside class="card prose-card"><p class="eyebrow">Siguiente objetivo</p><h2 data-next-title>Primera misión</h2><p data-next-copy>Completa una microlección y gana 20 XP.</p><a class="button" data-next-link href={`${base}mision/1-1`}>Continuar →</a></aside></div></div>
-<script is:inline define:vars={{base}}>
-const names=['¿Qué es un algoritmo?','Hablar en pseudocódigo','Entrada · Proceso · Salida','Variables y tipos','Leer, asignar y escribir','Comparar valores','Lógica booleana','Si · Entonces · Sino','Decisiones anidadas','Según','Pensar en ciclos','Contar y acumular','Para','Mientras','Repetir · Hasta Que'],ids=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5','3-1','3-2','3-3','3-4','3-5'];function render(){const s=window.PQ.read(),n=s.completed.length,p=Math.round(n/15*100),i=ids.findIndex(x=>!s.completed.includes(x));document.querySelector('[data-completed]').textContent=n;document.querySelector('[data-percent]').textContent=p+'%';document.querySelector('[data-progress]').style.width=p+'%';document.querySelector('[data-rank]').textContent=s.xp>=200?'Developer':s.xp>=100?'Junior':'Novato';document.querySelector('[data-next-title]').textContent=i<0?'¡Ruta dominada!':names[i];document.querySelector('[data-next-copy]').textContent=i<0?'Repasa cualquier misión mientras llegan nuevos niveles.':'Completa esta misión y gana 20 XP.';document.querySelector('[data-next-link]').href=base+'mision/'+(i<0?'3-5':ids[i]);document.querySelectorAll('[data-badge]').forEach(el=>{const earned=s.badges.includes(el.dataset.badge)||(el.dataset.badge==='Imparable'&&s.streak>=3);el.style.opacity=earned?'1':'.38';if(earned)el.classList.add('earned')})}render();window.addEventListener('pq:update',render);
-</script></AppLayout>
+<AppLayout title="Mi progreso">
+  <div class="container">
+    <header class="page-head"><p class="eyebrow">Tu perfil</p><h1>Mi progreso</h1><p>Un resumen claro de tu experiencia, misiones completadas e insignias.</p></header>
+    <section class="stat-grid">
+      <article class="card stat-card"><span>Experiencia total</span><strong>⚡ <i data-xp>0</i> XP</strong></article>
+      <article class="card stat-card"><span>Misiones completadas</span><strong>✓ <i data-completed>0</i> / 15</strong></article>
+      <article class="card stat-card"><span>Racha actual</span><strong>🔥 <i data-streak>1</i> días</strong></article>
+    </section>
+    <section class="card profile-card"><div class="profile-avatar" data-profile-initial>PQ</div><div class="profile-identity"><span data-profile-name>Nombre</span><strong data-profile-alias-text>Alias</strong><small>Perfil guardado localmente</small></div><div class="profile-actions"><button class="button secondary" data-open-alias>Editar alias</button><button class="button" data-export-card>Exportar resumen PNG</button><button class="reset-link" data-open-reset>Reiniciar progreso</button></div></section>
+    <section class="summary-grid">
+      <article class="card journey">
+        <div class="journey-head"><div><p class="eyebrow">Avance de misiones</p><h2 data-percent>0% completado</h2></div><a class="button secondary" data-next-link href={`${base}mision/1-1`}>Continuar →</a></div>
+        <div class="progress big" role="progressbar" aria-label="Misiones completadas" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0" data-progress-track><span data-progress></span></div>
+        <div class="completion-total"><span>✓</span><div><b><i data-completed>0</i> misiones terminadas</b><small data-next-copy>Tu primera misión te espera.</small></div></div>
+      </article>
+      <aside class="card next-badge"><p class="eyebrow">Próxima insignia</p><div data-next-icon>🌱</div><h2 data-next-badge>Primer impulso</h2><p data-next-badge-copy>Te faltan 100 XP.</p><div class="progress"><span data-badge-progress></span></div></aside>
+    </section>
+    <section class="badge-section">
+      <div class="section-title"><div><h2>Insignias de experiencia</h2><p>Se desbloquean automáticamente al alcanzar cada marca.</p></div><span class="pill"><b data-earned-count>0</b>/5</span></div>
+      <div class="xp-badges">{badgeDefinitions.map(b=><article class="card xp-badge" data-threshold={b.xp}><div>{b.icon}</div><span>{b.xp} XP</span><h3>{b.name}</h3><strong data-lock>🔒</strong></article>)}</div>
+    </section>
+  </div>
+  <dialog class="profile-action-modal" data-alias-modal aria-labelledby="alias-modal-title"><div class="modal-head"><div><p class="eyebrow">Identidad de aventura</p><h2 id="alias-modal-title">Editar alias</h2></div><button class="modal-close" data-close-alias aria-label="Cerrar">×</button></div><p>Tu nombre permanecerá sin cambios. El nuevo alias se mostrará en tu resumen y tarjeta compartible.</p><label>Nuevo alias<input data-profile-alias-input minlength="2" maxlength="24" autocomplete="nickname"></label><button class="button" data-save-alias>Guardar alias</button></dialog>
+  <dialog class="profile-action-modal reset-confirm" data-reset-modal aria-labelledby="reset-modal-title"><div class="reset-symbol">⚠️</div><h2 id="reset-modal-title">¿Reiniciar toda la aventura?</h2><p>Se eliminarán definitivamente tu nombre, alias, XP, insignias, puntuaciones y misiones guardadas en este navegador.</p><div class="modal-actions"><button class="button secondary" data-close-reset>Conservar progreso</button><button class="reset-button" data-confirm-reset>Sí, reiniciar todo</button></div></dialog>
+  <script is:inline define:vars={{missionsData:missionDefinitions,badgesData:badgeDefinitions}}>
+    function renderProgress(){
+      const state=window.PQ.read();
+      const done=state.completed||[];
+      const percent=Math.round(done.length/15*100);
+      const nextMission=missionsData.find(m=>!done.includes(m.id));
+      const nextBadge=badgesData.find(b=>state.xp<b.xp);
+      const previous=nextBadge?Math.max(0,...badgesData.filter(b=>b.xp<nextBadge.xp).map(b=>b.xp)):2500;
+      document.querySelector('[data-profile-name]').textContent=state.profile?.name||'';
+      document.querySelector('[data-profile-alias-text]').textContent='@'+(state.profile?.alias||'Aventurero');
+      document.querySelector('[data-profile-alias-input]').value=state.profile?.alias||'';
+      document.querySelector('[data-profile-initial]').textContent=(state.profile?.alias||'PQ').slice(0,2).toUpperCase();
+      document.querySelectorAll('[data-completed]').forEach(el=>el.textContent=done.length);
+      document.querySelector('[data-percent]').textContent=percent+'% completado';
+      document.querySelector('[data-progress]').style.width=percent+'%';
+      const track=document.querySelector('[data-progress-track]');
+      track?.setAttribute('aria-valuenow',String(done.length));
+      document.querySelector('[data-next-copy]').textContent=nextMission?`Siguiente: ${nextMission.title}`:'Completaste las 15 misiones disponibles.';
+      document.querySelector('[data-next-link]').href=(window.PQ_BASE||'/')+'mision/'+(nextMission?.id||'3-5');
+      const earned=badgesData.filter(b=>state.xp>=b.xp);
+      document.querySelector('[data-earned-count]').textContent=earned.length;
+      document.querySelectorAll('[data-threshold]').forEach(card=>{const unlocked=state.xp>=Number(card.dataset.threshold);card.classList.toggle('earned',unlocked);card.querySelector('[data-lock]').textContent=unlocked?'✓':'🔒'});
+      if(nextBadge){document.querySelector('[data-next-icon]').textContent=nextBadge.icon;document.querySelector('[data-next-badge]').textContent=nextBadge.name;document.querySelector('[data-next-badge-copy]').textContent=`Faltan ${nextBadge.xp-state.xp} XP para ${nextBadge.xp}.`;document.querySelector('[data-badge-progress]').style.width=`${Math.max(0,(state.xp-previous)/(nextBadge.xp-previous)*100)}%`}
+      else{document.querySelector('[data-next-icon]').textContent='👑';document.querySelector('[data-next-badge]').textContent='Colección completa';document.querySelector('[data-next-badge-copy]').textContent='Todas las insignias logradas.';document.querySelector('[data-badge-progress]').style.width='100%'}
+    }
+    function saveAlias(){const input=document.querySelector('[data-profile-alias-input]'),alias=input.value.trim().replace(/\s+/g,' ').slice(0,24),state=window.PQ.read();if(alias.length<2){window.PQ.toast('El alias debe tener al menos 2 caracteres');input.focus();return}state.profile={...state.profile,alias};window.PQ.save(state);window.PQ.tone('ok');window.PQ.toast('Alias actualizado')}
+    function exportCard(){const state=window.PQ.read(),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'),width=1200,height=630,percent=Math.round((state.completed?.length||0)/15*100),earned=badgesData.filter(b=>state.xp>=b.xp);canvas.width=width;canvas.height=height;const gradient=ctx.createLinearGradient(0,0,width,height);gradient.addColorStop(0,'#24164f');gradient.addColorStop(.55,'#7157e8');gradient.addColorStop(1,'#d76d77');ctx.fillStyle=gradient;ctx.fillRect(0,0,width,height);ctx.fillStyle='rgba(255,255,255,.08)';ctx.beginPath();ctx.arc(1050,60,260,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ffd77c';ctx.font='800 24px Arial';ctx.fillText('PSEUDOQUEST · RESUMEN DE AVENTURA',70,72);ctx.fillStyle='#fff';ctx.font='800 58px Arial';ctx.fillText(state.profile?.alias||'Aventurero',70,155);ctx.font='500 25px Arial';ctx.fillStyle='rgba(255,255,255,.78)';ctx.fillText(state.profile?.name||'',72,195);const cards=[['⚡',`${state.xp} XP`,'Experiencia'],['✓',`${state.completed?.length||0} / 15`,'Misiones'],['🏆',String(earned.length),'Insignias']];cards.forEach((item,index)=>{const x=70+index*355;ctx.fillStyle='rgba(255,255,255,.12)';ctx.beginPath();ctx.roundRect(x,245,320,150,22);ctx.fill();ctx.fillStyle='#fff';ctx.font='700 36px Arial';ctx.fillText(item[0]+'  '+item[1],x+25,305);ctx.font='500 20px Arial';ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillText(item[2],x+25,350)});ctx.fillStyle='rgba(255,255,255,.18)';ctx.beginPath();ctx.roundRect(70,455,1065,18,9);ctx.fill();const bar=ctx.createLinearGradient(70,0,1135,0);bar.addColorStop(0,'#ffd77c');bar.addColorStop(1,'#fff');ctx.fillStyle=bar;ctx.beginPath();ctx.roundRect(70,455,Math.max(18,1065*percent/100),18,9);ctx.fill();ctx.fillStyle='#fff';ctx.font='700 25px Arial';ctx.fillText(`${percent}% de las misiones completado`,70,525);ctx.font='500 18px Arial';ctx.fillStyle='rgba(255,255,255,.66)';ctx.fillText('Aprendiendo lógica y pseudocódigo · Progreso guardado localmente',70,575);canvas.toBlob(blob=>{if(!blob)return;const link=document.createElement('a'),safe=(state.profile?.alias||'aventurero').replace(/[^a-z0-9_-]/gi,'-');link.href=URL.createObjectURL(blob);link.download=`pseudoquest-${safe}.png`;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);window.PQ.tone('win');window.PQ.toast('Resumen listo para compartir')},'image/png')}
+    function initProgress(){const aliasModal=document.querySelector('[data-alias-modal]'),resetModal=document.querySelector('[data-reset-modal]');renderProgress();addEventListener('pq:update',renderProgress);document.querySelector('[data-open-alias]')?.addEventListener('click',()=>aliasModal?.showModal());document.querySelector('[data-close-alias]')?.addEventListener('click',()=>aliasModal?.close());document.querySelector('[data-save-alias]')?.addEventListener('click',()=>{saveAlias();if(document.querySelector('[data-profile-alias-input]').value.trim().length>=2)aliasModal?.close()});document.querySelector('[data-export-card]')?.addEventListener('click',exportCard);document.querySelector('[data-open-reset]')?.addEventListener('click',()=>resetModal?.showModal());document.querySelector('[data-close-reset]')?.addEventListener('click',()=>resetModal?.close());document.querySelector('[data-confirm-reset]')?.addEventListener('click',()=>window.PQ.reset());[aliasModal,resetModal].forEach(modal=>modal?.addEventListener('click',event=>{if(event.target===modal)modal.close()}))}
+    if(window.PQ)initProgress();else addEventListener('pq:ready',initProgress,{once:true});
+  </script>
+</AppLayout>
+<style>
+.stat-card i,.completion-total i{font-style:normal}.summary-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;margin:24px 0}.journey,.next-badge{padding:26px}.journey-head{display:flex;justify-content:space-between;gap:15px}.journey h2{margin:0}.big{height:13px;margin:24px 0}.completion-total{display:flex;align-items:center;gap:14px;padding:17px;border-radius:15px;background:var(--surface-2)}.completion-total>span{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#18a878;color:#fff;font-size:21px}.completion-total b,.completion-total small{display:block}.completion-total small{color:var(--muted)}.next-badge{text-align:center}.next-badge>div:first-of-type{font-size:50px}.next-badge p{color:var(--muted)}.badge-section{padding-bottom:70px}.xp-badges{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.xp-badge{position:relative;padding:18px;text-align:center;opacity:.45;filter:grayscale(1);transition:.35s}.xp-badge.earned{opacity:1;filter:none;border-color:#e8bd3f;animation:badge-in .55s ease}.xp-badge>div{font-size:35px}.xp-badge span{font-size:11px;color:var(--accent);font-weight:800}.xp-badge h3{font-size:13px}.xp-badge strong{position:absolute;right:9px;top:9px}@keyframes badge-in{50%{transform:translateY(-5px) scale(1.03)}}@media(max-width:850px){.summary-grid{grid-template-columns:1fr}.xp-badges{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.journey-head{display:block}.journey-head .button{margin-top:12px}.xp-badges{grid-template-columns:1fr}}
+</style>
