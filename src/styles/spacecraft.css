@@ -1,0 +1,16 @@
+/* Fleet silhouettes: cargo ark, orbital shuttle and fast explorer. */
+.vessel-distant{overflow:visible;will-change:transform,opacity}.vessel-distant .vessel-hull{stroke:#86dcd9;stroke-width:1.6}.vessel-distant .vessel-wing{stroke:#65a9d8;stroke-width:1.4}.vessel-distant .vessel-trail{stroke:#ffb35c;stroke-width:3;stroke-dasharray:22 7 5 8;filter:drop-shadow(0 0 3px #ff7b35) drop-shadow(0 0 8px rgba(76,202,255,.75));animation:engine-burn .32s linear infinite}
+/* Ark: broad modular hull and reinforced swept wings. */
+.vessel-one .vessel-hull{d:path('M42 36 L58 27 L105 22 L143 27 L171 36 L143 45 L105 50 L58 45 Z');fill:rgba(9,29,41,.94)}.vessel-one .vessel-wing{d:path('M76 27 L97 4 L125 25 L139 27 M76 45 L97 68 L125 47 L139 45');fill:rgba(14,46,61,.82)}.vessel-one circle{cx:148;cy:36;r:7}.vessel-one .vessel-trail{d:path('M0 31 H49 M0 41 H49')}
+/* Shuttle: compact atmospheric body with delta wings. */
+.vessel-two .vessel-hull{d:path('M49 36 Q76 20 132 25 L170 36 L132 47 Q76 52 49 36 Z');fill:rgba(12,35,48,.94)}.vessel-two .vessel-wing{d:path('M82 27 L119 9 L137 27 M82 45 L119 63 L137 45');fill:rgba(16,51,68,.78)}.vessel-two circle{cx:145;cy:36;r:5}.vessel-two .vessel-trail{d:path('M4 33 H57 M17 40 H57')}
+/* Explorer: narrow needle-shaped craft with stabilizer fins. */
+.vessel-three .vessel-hull{d:path('M38 36 L70 29 L140 31 L175 36 L140 41 L70 43 Z');fill:rgba(7,27,39,.96)}.vessel-three .vessel-wing{d:path('M92 31 L114 12 L132 31 M92 41 L114 60 L132 41');fill:rgba(10,43,60,.76)}.vessel-three circle{cx:151;cy:36;r:4}.vessel-three .vessel-trail{d:path('M0 34 H47 M14 39 H47');stroke-width:2.4}
+/* Constant-speed, genuinely diagonal flight paths. */
+.vessel-one{left:-220px;right:auto;top:72vh;animation:fleet-ark-pass 37s linear 3s infinite}.vessel-two{left:auto;right:-160px;top:8vh;animation:fleet-shuttle-pass 47s linear 17s infinite}.vessel-three{left:-130px;right:auto;top:14vh;animation:fleet-scout-pass 59s linear 31s infinite}
+@keyframes fleet-ark-pass{0%,8%{opacity:0;transform:translate3d(0,0,0) rotate(-13deg)}10%{opacity:.38}45%{opacity:.38}50%,100%{opacity:0;transform:translate3d(calc(100vw + 430px),-52vh,0) rotate(-13deg)}}
+@keyframes fleet-shuttle-pass{0%,20%{opacity:0;transform:translate3d(0,0,0) rotate(166deg)}22%{opacity:.3}53%{opacity:.3}58%,100%{opacity:0;transform:translate3d(calc(-100vw - 340px),64vh,0) rotate(166deg)}}
+@keyframes fleet-scout-pass{0%,34%{opacity:0;transform:translate3d(0,0,0) rotate(9deg)}36%{opacity:.25}59%{opacity:.25}64%,100%{opacity:0;transform:translate3d(calc(100vw + 280px),38vh,0) rotate(9deg)}}
+@keyframes engine-burn{50%{stroke-width:4;stroke-dashoffset:18;opacity:.62;filter:drop-shadow(0 0 5px #ff6d28) drop-shadow(0 0 11px #4dcbff)}}
+:root[data-theme=light] .vessel-distant .vessel-hull{fill:rgba(224,241,242,.9);stroke:#226e80}:root[data-theme=light] .vessel-distant .vessel-wing{fill:rgba(188,220,225,.82);stroke:#397d9d}:root[data-theme=light] .vessel-distant .vessel-trail{stroke:#e66f2c;filter:drop-shadow(0 0 3px rgba(230,111,44,.65))}
+@media(prefers-reduced-motion:reduce){.vessel-distant{display:none}.vessel-distant .vessel-trail{animation:none}}
