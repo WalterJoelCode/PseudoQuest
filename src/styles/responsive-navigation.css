@@ -1,0 +1,44 @@
+.nav-toggle{display:none;width:42px;height:42px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);cursor:pointer;place-content:center;gap:5px}
+.nav-toggle span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);transition:transform .22s,opacity .18s}
+.nav-toggle:focus-visible,.main-nav a:focus-visible,.button:focus-visible,.icon-button:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 65%,transparent);outline-offset:3px}
+@media(max-width:850px){
+  .topbar{height:68px;padding-inline:18px;gap:10px}
+  .nav-toggle{display:grid;margin-left:auto;order:2}
+  .top-actions{margin-left:0;order:3}
+  .top-actions .mini-stat{display:none}
+  .main-nav{display:grid;position:absolute;top:calc(100% + 8px);left:18px;right:18px;padding:10px;background:color-mix(in srgb,var(--surface) 96%,transparent);border:1px solid var(--line);border-radius:18px;box-shadow:0 22px 55px rgba(4,8,20,.24);backdrop-filter:blur(18px);opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:top;transition:opacity .2s,transform .2s,visibility .2s;z-index:30}
+  .main-nav a{min-height:44px;display:flex;align-items:center;padding:10px 13px;border-radius:10px}
+  .topbar.nav-open .main-nav{opacity:1;visibility:visible;transform:none}
+  .topbar.nav-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .topbar.nav-open .nav-toggle span:nth-child(2){opacity:0}
+  .topbar.nav-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
+@media(max-width:430px){.topbar{padding-inline:12px}.brand-lockup strong{font-size:13px}.kepler-mark{width:32px;height:32px}.nav-toggle{width:38px;height:38px}.icon-button{width:36px;height:36px}.main-nav{left:10px;right:10px}}
+
+/* La terminal conserva su carácter técnico sin perder contraste en modo claro. */
+:root[data-theme=light] .terminal-card{background:#f1f8f7;color:#173331;border-color:#b8d8d4;box-shadow:0 20px 55px rgba(25,77,72,.12)}
+:root[data-theme=light] .terminal-card small{color:#587672}
+:root[data-theme=light] .terminal-card pre{color:#08735b}
+:root[data-theme=light] .lab-progress{background:#d8e9e6}
+:root[data-theme=light] .challenge-body pre{background:#edf4f3;color:#674a06;border:1px solid var(--line)}
+
+@media(max-width:760px){
+  .lab-page .lab-hero{padding:32px 0 28px}
+  .lab-page .lab-hero-grid{gap:24px}
+  .lab-page .lab-hero h1{font-size:clamp(38px,13vw,52px);margin-bottom:14px}
+  .lab-page .lab-hero p{font-size:15px}
+  .lab-page .lab-stats{margin-top:18px;display:grid;grid-template-columns:1fr 1fr}
+  .lab-page .lab-stats span:last-child{grid-column:1/-1;text-align:center}
+  .terminal-card{padding:17px;border-radius:17px}
+  .terminal-card pre{min-height:88px;margin:18px 0;font-size:12px;line-height:1.7;white-space:pre-wrap}
+  .lab-page .lab-map{padding-block:42px}
+  .lab-page .lab-zone{margin-bottom:52px}
+  .lab-zone>header{gap:13px}
+  .lab-zone h2{font-size:22px}
+  .lab-page .path{margin:25px auto}
+  .lab-page .path-stop{min-height:132px;grid-template-columns:62px 1fr}
+  .lab-page .path:before{left:31px}
+  .lab-node{width:58px;height:58px;border-radius:18px}
+  .path-stop article{padding:15px}
+}
+@media(max-width:420px){.lab-page .lab-stats{grid-template-columns:1fr}.lab-page .lab-stats span:last-child{grid-column:auto}.lab-page .lab-map{padding-block:34px}.container{width:min(100% - 24px,1120px)}}

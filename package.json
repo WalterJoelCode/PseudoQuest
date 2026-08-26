@@ -1,6 +1,6 @@
 {
   "name": "pseudoquest",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Experiencia gamificada para aprender lógica y pseudocódigo",
   "author": "PseudoQuest",
   "license": "MIT",
@@ -10,7 +10,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "social:image": "node scripts/render-social.mjs"
   },
   "dependencies": {
     "astro": "7.0.3",
