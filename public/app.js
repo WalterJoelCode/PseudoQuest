@@ -180,6 +180,30 @@ addEventListener(
   },
   { once: true },
 );
+const topbar = document.querySelector(".topbar");
+const navToggle = document.querySelector("#nav-toggle");
+function closeNavigation() {
+  topbar?.classList.remove("nav-open");
+  navToggle?.setAttribute("aria-expanded", "false");
+  navToggle?.setAttribute("aria-label", "Abrir menú principal");
+}
+navToggle?.addEventListener("click", () => {
+  const open = !topbar?.classList.contains("nav-open");
+  topbar?.classList.toggle("nav-open", open);
+  navToggle.setAttribute("aria-expanded", String(open));
+  navToggle.setAttribute("aria-label", open ? "Cerrar menú principal" : "Abrir menú principal");
+});
+document.querySelectorAll(".main-nav a").forEach((link) =>
+  link.addEventListener("click", closeNavigation),
+);
+document.addEventListener("pointerdown", (event) => {
+  if (topbar?.classList.contains("nav-open") && !topbar.contains(event.target))
+    closeNavigation();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeNavigation();
+});
+
 const themeToggle = document.querySelector("#theme-toggle");
 function paintTheme() {
   const dark = document.documentElement.dataset.theme === "dark";
@@ -204,6 +228,91 @@ themeToggle?.addEventListener("click", () => {
   tone("ok");
   setTimeout(() => root.classList.remove("theme-transit"), 1500);
 });
+
+const fleet = [...document.querySelectorAll(".space-atmosphere > .vessel-distant")].map(
+  (element) => ({ element, x: 0, y: 0, vx: 0, vy: 0, lastX: null, lastY: null, rate: 1 }),
+);
+const fleetPointer = { x: -1000, y: -1000, active: false };
+addEventListener("pointermove", (event) => {
+  fleetPointer.x = event.clientX;
+  fleetPointer.y = event.clientY;
+  fleetPointer.active = true;
+}, { passive: true });
+document.documentElement.addEventListener("pointerleave", () => {
+  fleetPointer.active = false;
+});
+function animateFleetAvoidance() {
+  if (document.visibilityState === "visible" && fleet.length) {
+    const positions = fleet.map((ship) => {
+      const { element } = ship;
+      const rect = element.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const routeX = ship.lastX == null ? 1 : x - ship.lastX;
+      const routeY = ship.lastY == null ? 0 : y - ship.lastY;
+      ship.lastX = x;
+      ship.lastY = y;
+      return { x, y, routeX, routeY, radius: Math.max(48, rect.width * 0.48), visible: Number(getComputedStyle(element).opacity) > 0.04 };
+    });
+    const forces = fleet.map(() => ({ x: 0, y: 0, pointer: false }));
+    positions.forEach((position, index) => {
+      if (!position.visible) return;
+      if (fleetPointer.active) {
+        const dx = position.x - fleetPointer.x;
+        const dy = position.y - fleetPointer.y;
+        const distance = Math.hypot(dx, dy) || 1;
+        const range = position.radius + 125;
+        if (distance < range) {
+          const routeLength = Math.hypot(position.routeX, position.routeY) || 1;
+          const sideX = -position.routeY / routeLength;
+          const sideY = position.routeX / routeLength;
+          const side = Math.sign(dx * sideX + dy * sideY) || 1;
+          const strength = (range - distance) / range;
+          forces[index].x += sideX * side * strength * 0.82 + (dx / distance) * strength * 0.16;
+          forces[index].y += sideY * side * strength * 0.82 + (dy / distance) * strength * 0.16;
+          forces[index].pointer = true;
+        }
+      }
+      for (let other = index + 1; other < positions.length; other++) {
+        if (!positions[other].visible) continue;
+        const dx = position.x - positions[other].x;
+        const dy = position.y - positions[other].y;
+        const distance = Math.hypot(dx, dy) || 1;
+        const safeDistance = position.radius + positions[other].radius + 55;
+        if (distance < safeDistance) {
+          const strength = ((safeDistance - distance) / safeDistance) * 2.2;
+          const fx = (dx / distance) * strength;
+          const fy = (dy / distance) * strength;
+          forces[index].x += fx;
+          forces[index].y += fy;
+          forces[other].x -= fx;
+          forces[other].y -= fy;
+        }
+      }
+    });
+    fleet.forEach((ship, index) => {
+      ship.vx = ship.vx * 0.9 + forces[index].x * 0.1;
+      ship.vy = ship.vy * 0.9 + forces[index].y * 0.1;
+      ship.x = Math.max(-32, Math.min(32, ship.x * 0.975 + ship.vx));
+      ship.y = Math.max(-25, Math.min(25, ship.y * 0.975 + ship.vy));
+      const targetRate = forces[index].pointer ? 1.65 : 1;
+      ship.rate += (targetRate - ship.rate) * 0.055;
+      ship.element.getAnimations().forEach((animation) => {
+        if (animation.effect?.target === ship.element) {
+          if (typeof animation.updatePlaybackRate === "function") animation.updatePlaybackRate(ship.rate);
+          else animation.playbackRate = ship.rate;
+        }
+      });
+      ship.element.style.setProperty("--avoid-x", `${ship.x.toFixed(2)}px`);
+      ship.element.style.setProperty("--avoid-y", `${ship.y.toFixed(2)}px`);
+      ship.element.classList.toggle("pointer-alert", forces[index].pointer);
+    });
+  }
+  requestAnimationFrame(animateFleetAvoidance);
+}
+if (fleet.length && !matchMedia("(prefers-reduced-motion: reduce)").matches)
+  requestAnimationFrame(animateFleetAvoidance);
+
 const audioModal = document.querySelector("#audio-modal"),
   soundRange = document.querySelector("#sound-volume"),
   musicRange = document.querySelector("#music-volume-global"),

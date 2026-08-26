@@ -1,0 +1,6 @@
+/* Las naves no capturan clics; reaccionan al puntero detectado sobre la página. */
+.space-atmosphere>.vessel-distant{display:block;translate:var(--avoid-x,0) var(--avoid-y,0);transition:filter .38s ease;contain:layout style}
+.space-atmosphere:before,.space-atmosphere:after,.space-atmosphere .orbit-a:before{display:none}
+.vessel-distant.pointer-alert{filter:drop-shadow(0 0 10px rgba(255,165,78,.8)) drop-shadow(0 0 22px rgba(89,225,194,.62));z-index:4}
+.vessel-distant.pointer-alert .vessel-trail{stroke:#ffd074;stroke-width:4;animation-duration:.16s}
+@media(prefers-reduced-motion:reduce){.space-atmosphere>.vessel-distant{display:none}}

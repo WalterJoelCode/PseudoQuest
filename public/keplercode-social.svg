@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="space" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07101d"/><stop offset=".55" stop-color="#12102b"/><stop offset="1" stop-color="#071b24"/></linearGradient>
+    <radialGradient id="planet" cx="30%" cy="25%"><stop stop-color="#86e3d9"/><stop offset=".42" stop-color="#2f8a91"/><stop offset=".72" stop-color="#294777"/><stop offset="1" stop-color="#121933"/></radialGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#42d6cc"/><stop offset=".52" stop-color="#7556f1"/><stop offset="1" stop-color="#d76d77"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#space)"/>
+  <g fill="#fff" opacity=".55"><circle cx="82" cy="90" r="2"/><circle cx="186" cy="174" r="1.5"/><circle cx="328" cy="72" r="1"/><circle cx="484" cy="145" r="2"/><circle cx="693" cy="66" r="1.4"/><circle cx="785" cy="178" r="1"/><circle cx="1014" cy="95" r="2"/><circle cx="1120" cy="220" r="1.5"/><circle cx="920" cy="332" r="1"/><circle cx="145" cy="480" r="1.5"/></g>
+  <circle cx="1030" cy="505" r="250" fill="url(#planet)" stroke="#55dad0" stroke-opacity=".3" stroke-width="3"/>
+  <path d="M775 493c135-50 306-36 420 24" fill="none" stroke="#6be7dc" stroke-opacity=".2" stroke-width="9"/>
+  <circle cx="991" cy="470" r="14" fill="#07101d" opacity=".42"/><circle cx="1080" cy="390" r="25" fill="#07101d" opacity=".28"/>
+  <g transform="translate(76 70)"><path d="M42 0 82 23v48L42 94 2 71V23Z" fill="#081321" stroke="url(#brand)" stroke-width="4"/><circle cx="42" cy="47" r="31" fill="none" stroke="url(#brand)" stroke-width="2" stroke-dasharray="8 6"/><path d="M25 22v50h12V52l19 20h16L48 46l22-24H55L37 42V22Z" fill="#f4fbff"/></g>
+  <text x="180" y="104" fill="#7edfd6" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="7">PSEUDOQUEST</text>
+  <text x="75" y="270" fill="#f4fbff" font-family="Arial,sans-serif" font-size="88" font-weight="800" letter-spacing="-4">KEPLER<tspan fill="#64dcd2">CODE</tspan></text>
+  <text x="80" y="324" fill="#aab6ca" font-family="Arial,sans-serif" font-size="25" letter-spacing="2">RECONSTRUYE EL CÓDIGO. REINICIA EL FUTURO.</text>
+  <path d="M80 382h510" stroke="url(#brand)" stroke-width="3"/>
+  <text x="80" y="438" fill="#d8deea" font-family="Arial,sans-serif" font-size="27">Una aventura narrativa para aprender</text>
+  <text x="80" y="477" fill="#d8deea" font-family="Arial,sans-serif" font-size="27">lógica, algoritmos y pseudocódigo.</text>
+  <text x="80" y="552" fill="#58d6ca" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2">KEPLER-22B // ARCHIVE LINK ONLINE</text>
+</svg>
