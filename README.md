@@ -153,9 +153,22 @@ export default defineConfig({
 });
 ```
 
-## Autor
+## Creador de la idea y la solución
 
-Desarrollado por [@walterjoelcode](https://github.com/walterjoelcode).
+**KeplerCode / PseudoQuest es una idea original de [Walter Joel (@walterjoelcode)](https://github.com/walterjoelcode).**
+
+Walter Joel concibió el proyecto como una forma diferente de enseñar pensamiento lógico, algoritmos y pseudocódigo: convertir el aprendizaje en una aventura progresiva donde cada ejercicio representa la recuperación de conocimiento perdido.
+
+Además de crear la idea, es el autor de la solución y responsable de definir su enfoque educativo, narrativa, experiencia de usuario, identidad visual y dirección técnica. El resultado une educación y storytelling en una aplicación web accesible, responsiva y orientada a que el estudiante aprenda mediante práctica, retroalimentación y progreso continuo.
+
+### Visión del creador
+
+> Hacer que aprender algoritmos se sienta como participar en una misión: comprender un problema, reconstruir su lógica y descubrir que cada solución permite avanzar un poco más.
+
+- **Idea, concepto y visión:** Walter Joel.
+- **Diseño de la solución:** Walter Joel.
+- **Dirección de producto, narrativa y experiencia:** Walter Joel.
+- **Desarrollo y mantenimiento:** [@walterjoelcode](https://github.com/walterjoelcode).
 
 ## Licencia
 
